@@ -1,6 +1,7 @@
 package com.github.n1ay.parser;
 
 import com.github.n1ay.parser.action.Action;
+import com.github.n1ay.parser.action.Error;
 import com.github.n1ay.parser.action.ParsingErrorException;
 
 import java.util.ArrayList;
@@ -10,20 +11,29 @@ import java.util.Stack;
 public class SLR1 {
     private ArrayList<Symbol> input;
     private Hashmatrix<Integer, Symbol, Action> parsingTable;
-    private Stack<Integer> stateHistory;
+    private Stack<Integer> stateStack;
     private Stack<Symbol> symbolStack;
     private LinkedList<Integer> productionList;
     private Grammar grammar;
     private boolean ok = false;
 
     public SLR1() {
-        stateHistory = new Stack<>();
+        stateStack = new Stack<>();
         symbolStack = new Stack<>();
+        productionList = new LinkedList<>();
     }
 
     public LinkedList<Integer> parse() throws ParsingErrorException {
-        while(input.size() > 1 && !ok) {
-            parsingTable.get(stateHistory.peek(), input.get(0)).action(this);
+        productionList.clear();
+        stateStack.clear();
+        stateStack.push(0);
+        symbolStack.clear();
+        while(input.size() > 0 && !ok) {
+            try {
+                parsingTable.get(stateStack.peek(), input.get(0)).action(this);
+            } catch (NullPointerException ex) {
+                new Error().action(this);
+            }
         }
 
         return  productionList;
@@ -45,12 +55,12 @@ public class SLR1 {
         this.parsingTable = parsingTable;
     }
 
-    public Stack<Integer> getStateHistory() {
-        return stateHistory;
+    public Stack<Integer> getStateStack() {
+        return stateStack;
     }
 
-    public void setStateHistory(Stack<Integer> stateHistory) {
-        this.stateHistory = stateHistory;
+    public void setStateStack(Stack<Integer> stateStack) {
+        this.stateStack = stateStack;
     }
 
     public Stack<Symbol> getSymbolStack() {

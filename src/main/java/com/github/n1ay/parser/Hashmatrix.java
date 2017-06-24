@@ -25,4 +25,9 @@ public class Hashmatrix<K1, K2, V> {
             matrix.put(key1, hashtable);
         }
     }
+
+    public Hashmatrix<K1, K2, V> add(K1 key1, K2 key2, V value) {
+        put(key1, key2, value);
+        return this;
+    }
 }

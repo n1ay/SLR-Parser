@@ -38,4 +38,28 @@ public class Production {
     public LinkedList<Symbol> getRight() {
         return right;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if(object == null)
+            return false;
+        if(!(object instanceof Production))
+            return false;
+        Production production = (Production)object;
+        if(left != production.left || right.size() != production.right.size())
+            return false;
+        for(int i=0; i<right.size(); i++)
+            if(right.get(i) != production.right.get(i))
+                return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashcode = left.hashCode();
+        for (int i = 0; i < right.size(); i++) {
+            hashcode += right.get(i).hashCode()*Math.pow(11,i);
+        }
+        return hashcode;
+    }
 }

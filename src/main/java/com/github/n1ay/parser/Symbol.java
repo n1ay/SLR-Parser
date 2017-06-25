@@ -9,28 +9,33 @@ import java.util.LinkedList;
 public class Symbol {
     private String value;
 
-    public Symbol(String value) {
+    public Symbol(String value) throws InstantiationError {
+        if(value.length() > 10)
+            throw new InstantiationError("Symbol max length is 10 characters");
         this.value = value;
     }
 
     @Override
     public boolean equals(Object object) {
-        try {
-            if (object == null)
-                return false;
-            else if (value.equals(((Symbol) object).value))
-                return true;
-        } catch (ClassCastException classCastException) {}
-        return false;
+        if (object == null)
+            return false;
+        if(!(object instanceof Symbol))
+            return false;
+        return value.equals(((Symbol) object).value);
     }
 
     @Override
     public int hashCode() {
         int hashcode = 0;
         for(int i=0; i<value.length(); i++) {
-            hashcode += value.charAt(i)*(i+1)*(i+2)*(i+3);
+            hashcode += value.charAt(i)*Math.pow(128, i);
         }
         return hashcode;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 
     public String getValue() {

@@ -15,7 +15,7 @@ public class AppMain {
                 System.out.print(i+" ");
         } catch (ParsingErrorException ex) {
             System.out.println("Input does not belong to this grammar");
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 }

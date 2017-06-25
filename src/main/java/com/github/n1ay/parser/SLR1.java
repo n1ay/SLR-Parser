@@ -94,4 +94,10 @@ public class SLR1 {
     public void setOk(boolean ok) {
         this.ok = ok;
     }
+
+    public void generateParsingTable() throws NullPointerException {
+        if(grammar == null)
+            throw new NullPointerException("Grammar is not defined.");
+
+    }
 }
